@@ -6,6 +6,7 @@ import NotFound from "./components/NotFound"
 import PersonDetail from "./pages/PersonDetail"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import InfoFrom from "./components/InfoFrom"
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={< RootLayOut />} >
           <Route index element={<HomePage />} />
-          <Route path="about" element={<About />} />
+          <Route path="infoform" element={<InfoFrom />} />
           <Route path="detail/:id" element={<PersonDetail />} />
           <Route path="*" element={<NotFound />} />
         </Route>
