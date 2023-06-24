@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ifnoReducer from './infoSlice';
+import infoReducer from './infoSlice'
 
 export const store=configureStore({
     reducer:{
-        todos:ifnoReducer
+        infos:infoReducer
     }
 });

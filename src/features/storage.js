@@ -1,11 +1,12 @@
-const numbers = [];
-const stringy = '[]';
-export const addToLocal = (todos) => {
-  localStorage.setItem('data', JSON.stringify(todos));
+
+
+// const data = '[]';
+export const crudInfo= (infos)=>{
+  localStorage.setItem('infos', JSON.stringify(infos));
+
 }
 
-
-export const getData = () => {
-  const data = localStorage.getItem('data');
-  return data === null ? [] : JSON.parse(data);
+export const getInfos =()=>{
+  const data= localStorage.getItem('infos');
+  return data === null ?[] : JSON.parse(data);
 }
