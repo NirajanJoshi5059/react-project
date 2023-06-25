@@ -16,12 +16,12 @@ const infoSlice = createSlice({
             state.infos = state.infos.map((info)=> action.payload.id === info.id ? action.payload : info);
             crudInfo(state.infos);
         }
-
+ 
     }
 });
 
 
-export const{ addInfo } = infoSlice.actions;
+export const{ addInfo ,updateInfo } = infoSlice.actions;
 
 export default infoSlice.reducer;
 

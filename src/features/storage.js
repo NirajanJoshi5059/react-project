@@ -8,5 +8,5 @@ export const crudInfo= (infos)=>{
 
 export const getInfos =()=>{
   const data= localStorage.getItem('infos');
-  return data === null ?[] : JSON.parse(data);
+  return data === null ? [] : JSON.parse(data);
 }

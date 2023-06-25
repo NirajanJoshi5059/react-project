@@ -9,13 +9,16 @@ import {
 } from "@material-tailwind/react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { addInfo } from '../features/infoSlice';
-import { nanoid } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
+import { updateInfo } from '../features/infoSlice';
 
 
-const InfoFrom = () => {
+const UpdateForm = () => {
+
+    const { id } = useParams();
+    const { infos } = useSelector((store) => store.infos);
+    const info = infos.find((inf) => inf.id === id);
 
     const valSchema = Yup.object().shape({
         username: Yup.string().max(20).min(3).required('Username is required.'),
@@ -23,27 +26,25 @@ const InfoFrom = () => {
         gender: Yup.string().required('Please select your gender'),
         hobby: Yup.array().required(),
         country: Yup.string().required('Select your country'),
-        msg: Yup.string().max(500).min(5),
-        // image: null,
-        // preview: Yup.string()
-
+        msg: Yup.string().max(100).min(5),
+       
     });
     const dispatch = useDispatch();
     const nav = useNavigate();
-    
+
     const formik = useFormik({
         initialValues: {
-            username: '',
-            email: '',
-            gender: '',
-            hobby: [],
-            country: '',
-            msg: '',
-            preview: '',
-            id: nanoid()
+            username: info.username,
+            email: info.email,
+            gender: info.gender,
+            hobby: info.hobby,
+            country: info.country,
+            msg: info.msg,
+            preview: info.preview,
+            id: info.id
         },
         onSubmit: (val) => {
-            dispatch(addInfo(val));
+            dispatch(updateInfo(val))
             nav(-1);
         },
         validationSchema: valSchema
@@ -67,7 +68,7 @@ const InfoFrom = () => {
         <div className='max-w-xl shadow-2xl px-12 py-9 mx-auto'>
 
             <Typography color="gray" className="mt-1 font-normal">
-                Information Form.
+                Update Form.
             </Typography>
             <form onSubmit={formik.handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                 <div className="mb-4 flex flex-col gap-3">
@@ -92,8 +93,10 @@ const InfoFrom = () => {
 
                     <div >
                         <h1>Select Your Gender</h1>
-                        <Radio onChange={formik.handleChange} id="male" name="gender" label="Male" value='male' />
-                        <Radio onChange={formik.handleChange} id="female" name="gender" label="Female" value='female' />
+                        <Radio onChange={formik.handleChange} id="male" name="gender" label="Male" value='male'
+                            checked={formik.values.gender === 'male' ? true : false} />
+                        <Radio onChange={formik.handleChange} id="female" name="gender" label="Female" value='female'
+                            checked={formik.values.gender === 'female' ? true : false} />
                         {formik.errors.gender && formik.touched.gender && <h1 className='text-red-600'>{formik.errors.gender}</h1>}
 
                     </div>
@@ -104,7 +107,8 @@ const InfoFrom = () => {
                             return <Checkbox
                                 onChange={formik.handleChange}
                                 value={c.value}
-                                key={i} color={c.color} label={c.label} name='hobby' id={c.id} />
+                                key={i} color={c.color} label={c.label} name='hobby' id={c.id}
+                                checked={formik.values.hobby.includes(c.value) ? true : false} />
                         })}
                         {formik.errors.hobby && formik.touched.hobby && <h1 className='text-red-600'>{formik.errors.hobby}</h1>}
 
@@ -141,28 +145,19 @@ const InfoFrom = () => {
                                 })
                             }}
                             name='image'
-                            size="lg" label="Image" type='file' />
+                            size="lg" label="Update Image" type='file' />
                     </div>
                     {formik.values.preview && <img className='h-[200px]' src={formik.values.preview} alt='Loading...' />}
 
                 </div>
 
                 <Button type='submit' className="mt-6" fullWidth>
-                    Submit
+                    Update
                 </Button>
-                {/* <Typography color="gray" className="mt-4 text-center font-normal">
-                    Already have an account?{" "}
-                    <a
-                        href="#"
-                        className="font-medium text-blue-500 transition-colors hover:text-blue-700"
-                    >
-                        Sign In
-                    </a>
-                </Typography> */}
             </form>
         </div>
 
     )
 }
 
-export default InfoFrom
+export default UpdateForm
